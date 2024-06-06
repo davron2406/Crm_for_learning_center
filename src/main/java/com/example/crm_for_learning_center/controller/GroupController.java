@@ -62,6 +62,13 @@ public class GroupController {
         return ResponseEntity.ok(groupService.getTeacherGroups(id));
     }
 
+    @DeleteMapping("/removeUserFromGroup")
+    @PreAuthorize(value = "hasAnyAuthority('GET_GROUPS')")
+    public HttpEntity<?> removeUserFromGroup(@RequestParam UUID userId, @RequestParam UUID groupId){
+        ApiResponse apiResponse = groupService.removeUser(userId, groupId);
+        return ResponseEntity.status(apiResponse.isSuccess()?200:409).body(apiResponse);
+    }
+
     @GetMapping("/getUserGroups/{userId}")
     @PreAuthorize(value = "hasAuthority('GET_GROUPS')")
     public HttpEntity<?> getUserGroups(@PathVariable UUID userId){

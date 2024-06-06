@@ -46,12 +46,12 @@ public class DataLoader implements CommandLineRunner {
 //        sideBarMenuRepository.save(sideBarMenu1);
 //        sideBarMenuRepository.save(sideBarMenu2);
 //        sideBarMenuRepository.save(sideBarMenu3);
-//        sideBarMenuRepository.save(sideBarMenu4);
+//        sideBarMenuRepository.save(sideB arMenu4);
 //
 //            Permission[] permissions = Permission.values();
 //            Role admin = roleRepository.save(new Role(AppConstants.ADMIN, Arrays.asList(permissions)));
 //            roleRepository.save(new Role(AppConstants.USER, List.of()));
-//            userRepository.save(new User("Admin", passwordEncoder.encode( "admin123"),"admin123@gmail.com",null,admin, true, true, true, true));
+//            userRepository.save(new User("Admin", passwordEncoder.encode( "admin123"),"admin123@gmail.com",null, 1,admin, true, true, true, true));
 
 
     }

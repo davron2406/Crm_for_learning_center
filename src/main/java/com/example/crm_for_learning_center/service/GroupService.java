@@ -5,6 +5,7 @@ import com.example.crm_for_learning_center.entity.User;
 import com.example.crm_for_learning_center.payload.ApiResponse;
 import com.example.crm_for_learning_center.payload.GetGroupDto;
 import com.example.crm_for_learning_center.payload.GroupDto;
+import com.example.crm_for_learning_center.payload.GroupUsersWithPayment;
 import com.example.crm_for_learning_center.repository.GroupRepository;
 import com.example.crm_for_learning_center.repository.TeacherRepository;
 import com.example.crm_for_learning_center.repository.UserRepository;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 
@@ -54,8 +56,9 @@ public class GroupService {
         return groupRepository.findAll(page);
     }
 
-    public List<User> getGroupStudents(UUID id) {
-        return groupRepository.findGroupUsers(id);
+    public List<GroupUsersWithPayment> getGroupStudents(UUID groupId) {
+        System.out.println(new Date().getYear());
+        return groupRepository.findGroupUsersWithPayment(groupId, Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.YEAR));
     }
 
     public boolean addUsersToGroup(UUID id, List<UUID> userIds) {
@@ -71,11 +74,28 @@ public class GroupService {
         return true;
     }
 
+
+
     public List<Group> getTeacherGroups(UUID id) {
        return groupRepository.findByTeacherId(id);
     }
 
     public List<GetGroupDto> getUserGroups(UUID userId) {
         return groupRepository.findByUserId(userId);
+    }
+
+    public ApiResponse removeUser(UUID userId, UUID groupId) {
+        Optional<User> userById = userRepository.findById(userId);
+        if (userById.isEmpty()) {
+            return new ApiResponse("UserNotFound",false);
+        }
+        Optional<Group> groupById = groupRepository.findById(groupId);
+        if (groupById.isEmpty()) {
+            return new ApiResponse("GroupNotFound",false);
+        }
+        groupById.get().getUsers().remove(userById.get());
+
+        groupRepository.save(groupById.get());
+        return new ApiResponse("UserRemoved",true);
     }
 }

@@ -29,7 +29,8 @@ public class User extends AbstractEntity implements UserDetails {
     private String email;
 
     private String emailCode;
-
+    // 0 blocked  1 new user 2 active user
+    private int status;
 
     @ManyToOne
     private Role role;
@@ -39,12 +40,13 @@ public class User extends AbstractEntity implements UserDetails {
     private boolean accountNonLocked=true;
     private boolean credentialsNonExpired = true;
 
-    public User(String fullName, String password, String email, Role role, String emailCode) {
+    public User(String fullName, String password, String email, Role role, String emailCode,int status) {
         this.fullName = fullName;
         this.password = password;
         this.email = email;
         this.role = role;
         this.emailCode = emailCode;
+        this.status =  status;
     }
 
     @Override

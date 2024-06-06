@@ -54,14 +54,36 @@ public class UserService {
         return user;
     }
 
-    public Page<User> getUsers(Pageable page){
-        System.out.println(userRepository.getOnlyUsers(page));
-        return  userRepository.getOnlyUsers(page);
-
+    public Page<User> getUsers(int status,Pageable page){
+        if(status < 0){
+            return userRepository.getAllUsers(page);
+        }
+        return  userRepository.getOnlyUsersByStatus(status,page);
     }
 
 
     public Page<User> searchUser(String email,Pageable pageable) {
         return userRepository.searchUserByEmail(email,pageable);
+    }
+
+    public ApiResponse blockUser(UUID id) {
+        Optional<User> byId = userRepository.findById(id);
+        if(byId.isEmpty()){
+            return new ApiResponse("User Not found",false);
+        }
+        User user = byId.get();
+        user.setStatus(0);
+        userRepository.save(user);
+        return new ApiResponse("User successfully blocked",true);
+    }
+
+    public ApiResponse deleteUser(UUID id) {
+        Optional<User> byId = userRepository.findById(id);
+        if(byId.isEmpty()){
+            return new ApiResponse("User Not found",false);
+        }
+        User user = byId.get();
+        userRepository.delete(user);
+        return new ApiResponse("User successfully deleted",true);
     }
 }

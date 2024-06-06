@@ -27,6 +27,8 @@ public class UserController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    private UserRepository userRepository;
 
     @PutMapping("/{id}")
     @PreAuthorize(value = "hasAuthority('EDIT_USER')")
@@ -35,10 +37,10 @@ public class UserController {
         return ResponseEntity.status(apiResponse.isSuccess()?200:409).body(apiResponse);
     }
 
-    @GetMapping
+    @GetMapping("/{status}")
     @PreAuthorize(value = "hasAuthority('GET_USERS')")
-    public HttpEntity<?> getUsers(Pageable page){
-        return ResponseEntity.ok(userService.getUsers(page));
+    public HttpEntity<?> getUsers(@PathVariable int status, Pageable page){
+        return ResponseEntity.ok(userService.getUsers(status,page));
     }
 
     @GetMapping("/getCurrentUser")
@@ -47,14 +49,25 @@ public class UserController {
         return ResponseEntity.ok(principal);
     }
 
-
-
     @GetMapping("/searchUser/{email}")
     @PreAuthorize(value = "hasAuthority('GET_USERS')")
     public HttpEntity<?> searchUser(@PathVariable String email, Pageable pageable){
         return ResponseEntity.ok(userService.searchUser(email,pageable));
     }
 
+    @GetMapping("/blockUser/{id}")
+    @PreAuthorize(value = "hasAnyAuthority('GET_USERS')")
+    public HttpEntity<?> blockUser(@PathVariable UUID id){
+        ApiResponse apiResponse = userService.blockUser(id);
+        return ResponseEntity.status(apiResponse.isSuccess()?200:409).body(apiResponse);
+    }
+
+    @DeleteMapping("/deleteUser/{id}")
+    @PreAuthorize(value = "hasAnyAuthority('GET_USERS')")
+    public HttpEntity<?> deleteUser(@PathVariable UUID id){
+        ApiResponse apiResponse = userService.deleteUser(id);
+        return ResponseEntity.status(apiResponse.isSuccess()?200:409).body(apiResponse);
+    }
 
 
 }

@@ -47,7 +47,8 @@ public class AuthService implements UserDetailsService {
         User user = new User(
                 registerDto.getFullName(),passwordEncoder.encode(registerDto.getPassword()), registerDto.getEmail(),
                 roleRepository.findByName(AppConstants.USER).get(),
-                UUID.randomUUID().toString()
+                UUID.randomUUID().toString(),
+                1
         );
 
         userRepository.save(user);
@@ -58,7 +59,6 @@ public class AuthService implements UserDetailsService {
 
 
     public Boolean sendEmail(String sendingEmail, String emailCode){
-
         try {
             SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setFrom("davronsaydullayev2406@gmail.com");

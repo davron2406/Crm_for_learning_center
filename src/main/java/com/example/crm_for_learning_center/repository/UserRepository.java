@@ -17,9 +17,11 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     boolean existsByEmail(String email);
     boolean existsByEmailAndEmailCode(String email, String emailCode);
 
-    @Query("Select u.fullName ,r.name ,u.email ,u.id as values from users u inner join role r where u.role.name = 'user'")
-    Page<User> getOnlyUsers(Pageable pageable);
+    @Query("Select u.fullName ,r.name ,u.email ,u.id as values from users u inner join role r where u.role.name = 'user' and u.status = :status")
+    Page<User> getOnlyUsersByStatus(@Param("status") int status,Pageable pageable);
 
+    @Query("Select u.fullName ,r.name ,u.email ,u.id as values from users u inner join role r where u.role.name = 'user'")
+    Page<User> getAllUsers(Pageable pageable);
 
     Optional<User> findByEmail(String email);
 

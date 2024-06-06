@@ -37,8 +37,6 @@ public class TeacherService {
             teacher.setRole(roleRepository.findByName("teacher").get());
             userRepository.delete(user);
             teacherRepository.save(teacher);
-
-
             return new ApiResponse("Teacher added successfully", true);
         }
 
