@@ -63,7 +63,7 @@ public class AuthController {
             String token = jwtProvider.generateToken(user.getEmail());
             return ResponseEntity.ok(token);
         }catch (Exception e){
-            return ResponseEntity.ok(new ApiResponse("Password or email is incorrect",false));
+            return ResponseEntity.ok(new ApiResponse("Password or email is incorrect",false,null));
         }
     }
 

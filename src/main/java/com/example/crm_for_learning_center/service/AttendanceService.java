@@ -48,7 +48,7 @@ public class AttendanceService {
             }
         });
         attendanceRepository.saveAll(attendanceList);
-        return new ApiResponse("Saved", true);
+        return new ApiResponse("Attendance saved", true,null);
     }
 
     public boolean checkAttendance(AttendanceDto attendanceDto) {
@@ -71,17 +71,17 @@ public class AttendanceService {
         attendanceRepository.save(attendance);
     }
 
-    public List<Attendance> getGroupTodayAttendance(UUID groupId) {
-       return attendanceRepository.findAttendancesByGroupIdAndDate(groupId,LocalDate.now());
+    public ApiResponse getGroupTodayAttendance(UUID groupId) {
+       return new ApiResponse("Successful", true,attendanceRepository.findAttendancesByGroupIdAndDate(groupId,LocalDate.now()));
     }
 
-    public List<TotalAttendance> getGroupMonthAttendance(UUID groupId, int month, int year) {
+    public ApiResponse getGroupMonthAttendance(UUID groupId, int month, int year) {
         List<TotalAttendance> totalAttendances = new ArrayList<>();
         List<User> groupUsers = groupRepository.findGroupUsers(groupId);
         groupUsers.forEach((groupUser) -> {
             totalAttendances.add(getUserMonthAttendanceAndHomeworkTotal(groupId,groupUser.getId(),month,year));
         });
-    return totalAttendances;
+        return new ApiResponse("Successful", true,totalAttendances);
     }
 
     public TotalAttendance getUserMonthAttendanceAndHomeworkTotal(UUID groupId, UUID userId, int month, int year) {
@@ -103,7 +103,7 @@ public class AttendanceService {
 
     public List<Attendance> getUserMonthlyAttendanceAndHomework(
             UUID userId,UUID groupId, int month, int year) {
-        return attendanceRepository.getUserGroupMonthAttendance(groupId,userId,month,year);
+            return attendanceRepository.getUserGroupMonthAttendance(groupId,userId,month,year);
     }
 
 

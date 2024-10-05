@@ -49,19 +49,19 @@ public class GroupService {
 
         groupRepository.save(group);
 
-        return new ApiResponse("Muvaffaqiyatli",true);
+        return new ApiResponse("Successful",true, null);
     }
 
-    public Page<Group> getGroups(Pageable page) {
-        return groupRepository.findAll(page);
+    public ApiResponse getGroups(Pageable page) {
+        return new ApiResponse("Successful",true,groupRepository.findAll(page));
     }
 
-    public List<GroupUsersWithPayment> getGroupStudents(UUID groupId) {
+    public ApiResponse getGroupStudents(UUID groupId) {
         System.out.println(new Date().getYear());
-        return groupRepository.findGroupUsersWithPayment(groupId, Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.YEAR));
+        return new ApiResponse("Successful", true,groupRepository.findGroupUsersWithPayment(groupId, Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.YEAR)));
     }
 
-    public boolean addUsersToGroup(UUID id, List<UUID> userIds) {
+    public ApiResponse addUsersToGroup(UUID id, List<UUID> userIds) {
         List<User> students = new ArrayList<>();
         userIds.forEach(studentId -> {
            students.add(userRepository.findById(studentId).get());
@@ -71,31 +71,31 @@ public class GroupService {
         groupUsers.addAll(students);
         group.setUsers(groupUsers);
         groupRepository.save(group);
-        return true;
+        return new ApiResponse("Successful",true, null);
     }
 
 
 
-    public List<Group> getTeacherGroups(UUID id) {
-       return groupRepository.findByTeacherId(id);
+    public ApiResponse getTeacherGroups(UUID id) {
+       return new ApiResponse("Successful", true,groupRepository.findByTeacherId(id));
     }
 
-    public List<GetGroupDto> getUserGroups(UUID userId) {
-        return groupRepository.findByUserId(userId);
+    public ApiResponse getUserGroups(UUID userId) {
+        return new ApiResponse("Successfull", true,groupRepository.findByUserId(userId));
     }
 
     public ApiResponse removeUser(UUID userId, UUID groupId) {
         Optional<User> userById = userRepository.findById(userId);
         if (userById.isEmpty()) {
-            return new ApiResponse("UserNotFound",false);
+            return new ApiResponse("UserNotFound",false,null);
         }
         Optional<Group> groupById = groupRepository.findById(groupId);
         if (groupById.isEmpty()) {
-            return new ApiResponse("GroupNotFound",false);
+            return new ApiResponse("GroupNotFound",false,null);
         }
         groupById.get().getUsers().remove(userById.get());
 
         groupRepository.save(groupById.get());
-        return new ApiResponse("UserRemoved",true);
+        return new ApiResponse("UserRemoved",true,null);
     }
 }

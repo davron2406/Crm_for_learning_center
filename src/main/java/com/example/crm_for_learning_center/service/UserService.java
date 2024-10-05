@@ -31,12 +31,12 @@ public class UserService {
     public ApiResponse editUser(UUID id, UserDto userDto){
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isEmpty())
-            return new ApiResponse("User Not found",false);
+            return new ApiResponse("User Not found",false,null);
 
         User user = optionalUser.get();
         User editedUser = userDtotoUser(userDto, user);
         userRepository.save(editedUser);
-        return new ApiResponse("User successfully edited",true);
+        return new ApiResponse("User successfully edited",true,null);
     }
 
     private User userDtotoUser(UserDto userDto, User user){
@@ -54,36 +54,36 @@ public class UserService {
         return user;
     }
 
-    public Page<User> getUsers(int status,Pageable page){
+    public ApiResponse getUsers(int status,Pageable page){
         if(status < 0){
-            return userRepository.getAllUsers(page);
+            return new ApiResponse("Successfully",true,userRepository.getAllUsers(page));
         }
-        return  userRepository.getOnlyUsersByStatus(status,page);
+        return  new ApiResponse("Successfull",true,userRepository.getOnlyUsersByStatus(status,page));
     }
 
 
-    public Page<User> searchUser(String email,Pageable pageable) {
-        return userRepository.searchUserByEmail(email,pageable);
+    public ApiResponse searchUser(String email,Pageable pageable) {
+        return new ApiResponse("Successfull",true,userRepository.searchUserByEmail(email,pageable));
     }
 
     public ApiResponse blockUser(UUID id) {
         Optional<User> byId = userRepository.findById(id);
         if(byId.isEmpty()){
-            return new ApiResponse("User Not found",false);
+            return new ApiResponse("User Not found",false,null);
         }
         User user = byId.get();
         user.setStatus(0);
         userRepository.save(user);
-        return new ApiResponse("User successfully blocked",true);
+        return new ApiResponse("User successfully blocked",true,null);
     }
 
     public ApiResponse deleteUser(UUID id) {
         Optional<User> byId = userRepository.findById(id);
         if(byId.isEmpty()){
-            return new ApiResponse("User Not found",false);
+            return new ApiResponse("User Not found",false,null);
         }
         User user = byId.get();
         userRepository.delete(user);
-        return new ApiResponse("User successfully deleted",true);
+        return new ApiResponse("User successfully deleted",true,null);
     }
 }

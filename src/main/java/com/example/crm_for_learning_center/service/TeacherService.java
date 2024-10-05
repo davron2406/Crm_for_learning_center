@@ -37,18 +37,18 @@ public class TeacherService {
             teacher.setRole(roleRepository.findByName("teacher").get());
             userRepository.delete(user);
             teacherRepository.save(teacher);
-            return new ApiResponse("Teacher added successfully", true);
+            return new ApiResponse("Teacher added successfully", true,null);
         }
 
-        return new ApiResponse("Teacher not found", true);
+        return new ApiResponse("User not found", true,null);
     }
 
-    public Page<Teacher> getTeacherIdsAndNames(Pageable pageable) {
-        return teacherRepository.getTeacherIdsAndNames(pageable);
+    public ApiResponse getTeacherIdsAndNames(Pageable pageable) {
+        return new ApiResponse("Successful", true,teacherRepository.getTeacherIdsAndNames(pageable));
 
     }
 
-    public Page<GetTeacherDto> getTeachers(Pageable pageable) {
-        return teacherRepository.getTeachers(pageable);
+    public ApiResponse getTeachers(Pageable pageable) {
+        return new ApiResponse("Successful",true,teacherRepository.getTeachers(pageable));
     }
 }

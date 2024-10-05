@@ -4,6 +4,7 @@ import com.example.crm_for_learning_center.entity.Role;
 import com.example.crm_for_learning_center.entity.SideBarMenu;
 import com.example.crm_for_learning_center.entity.User;
 import com.example.crm_for_learning_center.entity.enums.Permission;
+import com.example.crm_for_learning_center.payload.ApiResponse;
 import com.example.crm_for_learning_center.repository.SideBarMenuRepository;
 import com.example.crm_for_learning_center.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +24,9 @@ public class SideBarMenuService {
     @Autowired
     UserRepository userRepository;
 
-    public List<SideBarMenu> getSideBarMenuBasedUser(UUID id){
+    public ApiResponse getSideBarMenuBasedUser(UUID id){
         User user= userRepository.findById(id).get();
-       return getSideBarMenuBasedRole(user.getRole());
+       return new ApiResponse("Successful",true,getSideBarMenuBasedRole(user.getRole()));
     }
 
 

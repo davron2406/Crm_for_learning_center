@@ -51,15 +51,15 @@ public class PaymentService {
             paymentRepository.save(payment);
         }
 
-        return new ApiResponse("Payment saved successfully",true);
+        return new ApiResponse("Payment saved successfully",true,null);
     }
 
     public Page<GetPaymentDto> getPayments(Pageable pageable) {
        return paymentRepository.findAllPaymentsWithUserNamesAndGroupName(pageable);
     }
 
-    public Page<GetPaymentDto> getUserPayments(String email, Pageable pageable) {
+    public ApiResponse getUserPayments(String email, Pageable pageable) {
         Optional<User> byEmail = userRepository.findByEmail(email);
-        return byEmail.map(user -> paymentRepository.findByUserId(user.getId(), pageable)).orElse(null);
+        return new ApiResponse("Successfull", true,byEmail.map(user -> paymentRepository.findByUserId(user.getId(), pageable)).orElse(null));
     }
 }

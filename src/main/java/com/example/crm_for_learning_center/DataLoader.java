@@ -37,21 +37,21 @@ public class DataLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-//        SideBarMenu sideBarMenu = new SideBarMenu("Groups","groups","/groups");
-//        SideBarMenu sideBarMenu1 = new SideBarMenu("Teacher","cast_for_education","/teachers");
-//        SideBarMenu sideBarMenu2 = new SideBarMenu("Users","person","/users");
-//        SideBarMenu sideBarMenu3 = new SideBarMenu("Roles","workspace_premium","/roles");
-//        SideBarMenu sideBarMenu4 = new SideBarMenu("My Groups","groups","/myGroups");
-//        sideBarMenuRepository.save(sideBarMenu);
-//        sideBarMenuRepository.save(sideBarMenu1);
-//        sideBarMenuRepository.save(sideBarMenu2);
-//        sideBarMenuRepository.save(sideBarMenu3);
-//        sideBarMenuRepository.save(sideB arMenu4);
-//
-//            Permission[] permissions = Permission.values();
-//            Role admin = roleRepository.save(new Role(AppConstants.ADMIN, Arrays.asList(permissions)));
-//            roleRepository.save(new Role(AppConstants.USER, List.of()));
-//            userRepository.save(new User("Admin", passwordEncoder.encode( "admin123"),"admin123@gmail.com",null, 1,admin, true, true, true, true));
+        SideBarMenu sideBarMenu = new SideBarMenu("Groups","groups","/groups");
+        SideBarMenu sideBarMenu1 = new SideBarMenu("Teacher","cast_for_education","/teachers");
+        SideBarMenu sideBarMenu2 = new SideBarMenu("Users","person","/users");
+        SideBarMenu sideBarMenu3 = new SideBarMenu("Roles","workspace_premium","/roles");
+        SideBarMenu sideBarMenu4 = new SideBarMenu("My Groups","groups","/myGroups");
+        sideBarMenuRepository.save(sideBarMenu);
+        sideBarMenuRepository.save(sideBarMenu1);
+        sideBarMenuRepository.save(sideBarMenu2);
+        sideBarMenuRepository.save(sideBarMenu3);
+        sideBarMenuRepository.save(sideBarMenu4);
+
+            Permission[] permissions = Permission.values();
+            Role admin = roleRepository.save(new Role(AppConstants.ADMIN, Arrays.asList(permissions)));
+            roleRepository.save(new Role(AppConstants.USER, List.of()));
+            userRepository.save(new User("Admin", passwordEncoder.encode( "admin123"),"admin123@gmail.com",null, 1,admin, true, true, true, true));
 
 
     }

@@ -28,34 +28,32 @@ public class RoleService {
     public ApiResponse addRole(RoleDto roleDto){
          Optional<Role> optionalRole = roleRepository.findByName(roleDto.getName());
         if(optionalRole.isPresent())
-            return new ApiResponse("Role Already exist", false);
-
+            return new ApiResponse("Role Already exist", false,null);
         List<Permission> permissions = new ArrayList<>();
-
         roleDto.getPermissions().forEach(permission -> {
             permissions.add(Permission.valueOf(permission));
         });
         Role role = new Role(roleDto.getName(), permissions);
         roleRepository.save(role);
 
-        return  new ApiResponse("Role successfully added",true);
+        return  new ApiResponse("Role successfully added",true,null);
     }
 
-    public Page<Role> searchRole(String roleName, Pageable pageable) {
-        return roleRepository.searchRole(roleName,pageable);
+    public ApiResponse searchRole(String roleName, Pageable pageable) {
+        return new ApiResponse("Successful", true,roleRepository.searchRole(roleName,pageable));
     }
 
-    public Page<Role> getRoles(Pageable pageable) {
-        return roleRepository.findAll(pageable);
+    public ApiResponse getRoles(Pageable pageable) {
+        return new ApiResponse("Successful", true,roleRepository.findAll(pageable));
     }
 
-    public List<String> getPermissions() {
+    public ApiResponse getPermissions() {
         Permission[] permission = Permission.values();
         List<String> permissions = new ArrayList<>();
         for(int i = 0; i < permission.length; i++) {
             permissions.add(permission[i].name());
         }
 
-        return permissions;
+        return new ApiResponse("Successful",true,permissions);
     }
 }

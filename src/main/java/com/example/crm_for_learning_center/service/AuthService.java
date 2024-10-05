@@ -43,7 +43,7 @@ public class AuthService implements UserDetailsService {
 
     public ApiResponse registerUser(RegisterDto registerDto) {
         if(userRepository.existsByEmail(registerDto.getEmail()))
-            return new ApiResponse("Email already exist",false);
+            return new ApiResponse("Email already exist",false,null );
         User user = new User(
                 registerDto.getFullName(),passwordEncoder.encode(registerDto.getPassword()), registerDto.getEmail(),
                 roleRepository.findByName(AppConstants.USER).get(),
@@ -53,7 +53,7 @@ public class AuthService implements UserDetailsService {
 
         userRepository.save(user);
         sendEmail(user.getEmail(), user.getEmailCode());
-        return new ApiResponse("User successfully registered", true);
+        return new ApiResponse("User successfully registered", true,null);
 
     }
 
@@ -79,10 +79,10 @@ public class AuthService implements UserDetailsService {
            user.setEmailCode(null);
            user.setEnabled(true);
            userRepository.save(user);
-           return new ApiResponse("email successfully verified",true);
+           return new ApiResponse("email successfully verified",true,null);
        }
 
-       return new ApiResponse("User not Found",false);
+       return new ApiResponse("User not Found",false,null);
     }
 
 
